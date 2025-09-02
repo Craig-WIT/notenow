@@ -1,0 +1,1 @@
+<h1 class="text-4xl">Blog</h1>
