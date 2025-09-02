@@ -1,6 +1,9 @@
-<script>
-    let {data} = $props();
-</script>
+<!-- <svelte:head>
+	<title>NoteNow</title>
+	<meta property="og:title" content="NoteNow" />
+	<meta property="og:description" content="Some description" />
+	<meta name="description" content="Some description" />
+</svelte:head> -->
 
 <section class="hero bg-base-100 py-30">
 	<div class="container mx-auto flex flex-col items-center lg:flex-row">
