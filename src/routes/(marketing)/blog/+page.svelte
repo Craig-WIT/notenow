@@ -18,7 +18,10 @@
             <data.component {post} />
 		{/each}
 	</div>
-    <div class="flex justify-end">
+    <div class="flex no-js:hidden mt-10 justify-center">
+        <button class="btn btn-outline">Load More</button>
+    </div>
+    <div class="no-js:flex hidden justify-end">
 		<div class="join mt-10 grid w-full max-w-[500px] grid-cols-2 gap-4">
 			{#if currentPage > 1}
 				<a href="/blog?page={currentPage - 1}" class="join-item btn btn-outline">Previous page</a>

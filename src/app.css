@@ -8,3 +8,9 @@
         light --default,
         black --prefersdark;
 }
+
+@custom-variant no-js {
+    &:where(html.no-js *) {
+        @slot;
+    }
+}
