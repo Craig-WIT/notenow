@@ -1,11 +1,16 @@
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import type { PostsResponse } from '$lib/types';
 
-export const load = (async ({parent}) => {
-    const parentData = await parent();
-    console.log('Blog Route Universal Load')
+export const load = (async ({fetch}) => {
+    
+const postRes = await fetch('/api/posts');
+if(!postRes.ok) {
+    error(postRes.status, 'An error has occured!')
+}
+
     return {
         title: "The Blog",
-        count: 10,
-        parentData: parentData,
+        posts: (await postRes.json()) as PostsResponse
     };
 }) satisfies PageServerLoad;
