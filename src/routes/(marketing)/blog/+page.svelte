@@ -1,7 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/state';
+	import { POSTS_PER_PAGE } from '$lib/constants.js';
+
 	// import type { PageProps } from './$types';
 
 	let { data } = $props();
+
+    let currentPage = $derived(+(page.url.searchParams.get('page') ?? 1))
 </script>
 
 <div class="container mx-auto px-4 py-8">
@@ -12,5 +17,15 @@
 		{#each data.posts.posts as post}
             <data.component {post} />
 		{/each}
+	</div>
+    <div class="flex justify-end">
+		<div class="join mt-10 grid w-full max-w-[500px] grid-cols-2 gap-4">
+			{#if currentPage > 1}
+				<a href="/blog?page={currentPage - 1}" class="join-item btn btn-outline">Previous page</a>
+			{/if}
+			{#if Math.ceil(data.posts.total / POSTS_PER_PAGE) !== currentPage}
+				<a href="/blog?page={currentPage + 1}" class="join-item btn btn-outline">Next</a>
+			{/if}
+		</div>
 	</div>
 </div>
