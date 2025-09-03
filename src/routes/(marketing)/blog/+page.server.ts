@@ -11,6 +11,7 @@ if(!postRes.ok) {
 
     return {
         title: "The Blog",
-        posts: (await postRes.json()) as PostsResponse
+        posts: (await postRes.json()) as PostsResponse,
+        postType: Math.random() > 0.5 ? 1 : 2
     };
 }) satisfies PageServerLoad;
