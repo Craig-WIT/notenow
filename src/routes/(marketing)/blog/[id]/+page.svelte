@@ -17,10 +17,21 @@
 		</div>
 	</div>
 
-	{#each data.comments as comment}
-		<div class="card border-base-300 mt-4 rounded-md border-1 p-4">
-			<p class="mb-3 text-lg">{comment.body}</p>
-			<p class="text-sm">{comment.user.fullName}</p>
-		</div>
-	{/each}
+
+	{#await data.comments}
+		{#each { length: 4 }}
+				<div class="card border-base-300 mt-4 rounded-md border-1 p-4">
+					<div class="skeleton mb-2 h-4 w-full rounded-md"></div>
+					<div class="skeleton mb-2 h-4 w-full rounded-md"></div>
+					<div class="skeleton mb-2 h-4 w-50 rounded-md"></div>
+				</div>
+			{/each}
+		{:then comments}
+		{#each comments as comment}
+			<div class="card border-base-300 mt-4 rounded-md border-1 p-4">
+				<p class="mb-3 text-lg">{comment.body}</p>
+				<p class="text-sm">{comment.user.fullName}</p>
+			</div>
+		{/each}
+	{/await}
 </div>
