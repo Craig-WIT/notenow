@@ -16,4 +16,11 @@
 			{/each}
 		</div>
 	</div>
+
+	{#each data.comments as comment}
+		<div class="card border-base-300 mt-4 rounded-md border-1 p-4">
+			<p class="mb-3 text-lg">{comment.body}</p>
+			<p class="text-sm">{comment.user.fullName}</p>
+		</div>
+	{/each}
 </div>
