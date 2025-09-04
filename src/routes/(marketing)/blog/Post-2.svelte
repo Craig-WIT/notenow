@@ -13,4 +13,4 @@
 						<p class="text-md opacity-80">{post.body.slice(0, 200)}...</p>
 					</div>
 				</div>
-			</a>
+</a>
