@@ -1,8 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 
-export const load = (async ({cookies}) => {
-    const token = cookies.get('token')
+export const load = (async ({locals}) => {
     return {
-        user: token ? {name: 'John', id: 1} : null
+        user: locals.user
     };
 }) satisfies LayoutServerLoad;
