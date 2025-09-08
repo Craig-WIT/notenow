@@ -4,7 +4,7 @@
 	import { page } from '$app/state';
 
 	let { children, data }: LayoutProps = $props();
-
+    
 	const menuItems = [
 		{
 			path: '/',
