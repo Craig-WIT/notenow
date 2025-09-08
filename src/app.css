@@ -16,5 +16,5 @@
 }
 
 .bprogress .bar {
-    
+    background: var(--color-orange-600);
 }
