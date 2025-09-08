@@ -9,7 +9,9 @@ export const load = (async ({params, fetch}) => {
         const postRes = await fetch(`https://dummyjson.com/posts/${params.id}`)
 
         if(postRes.status !== 200) {
-            error(postRes.status, 'Failed to load post')
+            error(postRes.status, {message: 'Failed to load post',
+                code: "ERROR_CODE",
+            })
         }
 
         const postResJSON: Post = await postRes.json()
