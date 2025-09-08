@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Post, PostComment } from '$lib/types';
+import Rect from '$lib/rect';
 
 export const load = (async ({params, fetch}) => {
     
@@ -34,6 +35,7 @@ export const load = (async ({params, fetch}) => {
     
     return {
         comments: fetchComments(),
-        post: await fetchPost()
+        post: await fetchPost(),
+        rect: new Rect(0,0,100,100),
     };
 }) satisfies PageServerLoad;
