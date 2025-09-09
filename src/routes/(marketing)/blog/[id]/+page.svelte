@@ -4,7 +4,6 @@
 	let { data }: PageProps = $props();
 </script>
 
-<div class="container mx-auto px-4 py-8">
 	<div class="card bg-base-200 rounded-md p-10">
 		<div class="mb-16">
 			<h1 class=" mb-10 text-5xl font-bold">{data.post.title}</h1>
@@ -34,4 +33,3 @@
 			</div>
 		{/each}
 	{/await}
-</div>
