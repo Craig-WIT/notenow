@@ -1,0 +1,7 @@
+{
+	"editor.fontSize": 18,
+	"editor.formatOnSave": true,
+	"workbench.editor.labelFormat": "short",
+	"workbench.tree.indent": 20,
+	"explorer.compactFolders": false
+}
