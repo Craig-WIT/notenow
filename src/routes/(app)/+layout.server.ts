@@ -56,8 +56,6 @@ export const load = (async ({locals}) => {
 
             const [workspaces,recentPages,recentNotes] = await Promise.all([workspacesPromise, recentPagesPromise, recentNotesPromise])
 
-            console.log(workspaces,recentNotes,recentPages)
-
     return {
         user: locals.session.user,
         workspaces,
