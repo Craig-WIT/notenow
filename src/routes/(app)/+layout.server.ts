@@ -9,7 +9,7 @@ export const load = (async ({locals}) => {
         .select({
             name: wsSchema.name,
             id: wsSchema.id,
-            role: roles.id,
+            role: roles.name,
         })
         .from(workspaceAccess)
         .innerJoin(wsSchema, eq(workspaceAccess.workspaceId, wsSchema.id))
