@@ -25,7 +25,9 @@
                     <ul class="dropdown dropdown-start menu menu-md dropdown-content dropdown-menu min-w-[300px]!" popover id="popover-1" style="position-anchor:--anchor-1">
                         {#each data.workspaces || [] as workspace}
                             <li>
-                                <a href="w/{workspace.id}" class="rounded-md">
+                                <a onclick={(e) => {
+									(e.currentTarget.closest('[popover]') as HTMLElement)?.hidePopover();
+								}} href="/w/{workspace.id}" class="rounded-md">
                                     <div class="avatar avatar-placeholder">
                                         <div class="w-10 rounded-md bg-blue-700">
                                             <span class="text-lg text-white">
@@ -55,7 +57,9 @@
                     <ul class="dropdown dropdown-start menu menu-md dropdown-content dropdown-menu min-w-[300px]!" popover id="popover-2" style="position-anchor:--anchor-2">
                         {#each data.recentPages || [] as page}
 								<li>
-									<a class="items-start rounded-md" href="/p/{page.id}">
+									<a onclick={(e) => {
+									(e.currentTarget.closest('[popover]') as HTMLElement)?.hidePopover();
+								}} class="items-start rounded-md" href="/p/{page.id}">
 										<StickyNote size="30" class="me-1 mt-1" />
 										<div>
 											<span class="block text-[16px]">{page.title}</span>
