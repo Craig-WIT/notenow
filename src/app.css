@@ -24,3 +24,7 @@
         @apply bg-base-200 border-base-300 z-1 mt-4 ml-0 min-w-52 rounded-md border-1 p-2 shadow-md transform-none!;
     }
 }
+
+div { outline: 1px solid red; }
+ul  { outline: 1px solid green; }
+li  { outline: 1px solid blue; }

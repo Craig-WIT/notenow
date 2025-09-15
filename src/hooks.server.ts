@@ -11,8 +11,6 @@ export const handle: Handle = async ({event,resolve}) => {
         redirect(307, '/signin')
     }
 
-    console.log(event.locals.session)
-
     return resolve(event);
 }
 
