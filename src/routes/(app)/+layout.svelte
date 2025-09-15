@@ -7,7 +7,7 @@
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-	let selectedWorkspaceID = $derived(page.route.id === '/(app)/(workspace)/w/[wid]' && page.params.wid)
+	let selectedWorkspaceID = $derived(page.route.id?.startsWith('/(app)/(workspace)/w/[wid]') && page.params.wid)
 </script>
 
 <div class="flex h-svh flex-col">
