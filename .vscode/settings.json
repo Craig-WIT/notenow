@@ -3,5 +3,6 @@
 	"editor.formatOnSave": true,
 	"workbench.editor.labelFormat": "short",
 	"workbench.tree.indent": 20,
-	"explorer.compactFolders": false
+	"explorer.compactFolders": false,
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }

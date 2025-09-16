@@ -1,22 +1,29 @@
 import { db } from '$lib/server/db';
-import { notes, pageAccess, pages, roles, workspaceAccess, workspaces as wsSchema } from '$lib/server/db/schema';
+import {
+	notes,
+	pageAccess,
+	pages,
+	roles,
+	workspaceAccess,
+	workspaces as wsSchema
+} from '$lib/server/db/schema';
 import { eq, desc, and } from 'drizzle-orm';
 import type { LayoutServerLoad } from './$types';
 
-export const load = (async ({locals}) => {
-    if(locals.session) {
-        const workspacesPromise = db
-        .select({
-            name: wsSchema.name,
-            id: wsSchema.id,
-            role: roles.name,
-        })
-        .from(workspaceAccess)
-        .innerJoin(wsSchema, eq(workspaceAccess.workspaceId, wsSchema.id))
-        .innerJoin(roles, eq(workspaceAccess.roleId, roles.id))
-        .where(eq(workspaceAccess.userId, locals.session.user.id))
+export const load = (async ({ locals }) => {
+	if (locals.session) {
+		const workspacesPromise = db
+			.select({
+				name: wsSchema.name,
+				id: wsSchema.id,
+				role: roles.name
+			})
+			.from(workspaceAccess)
+			.innerJoin(wsSchema, eq(workspaceAccess.workspaceId, wsSchema.id))
+			.innerJoin(roles, eq(workspaceAccess.roleId, roles.id))
+			.where(eq(workspaceAccess.userId, locals.session.user.id));
 
-        const recentPagesPromise = db
+		const recentPagesPromise = db
 			.select({
 				title: pages.title,
 				id: pages.id,
@@ -32,7 +39,7 @@ export const load = (async ({locals}) => {
 			.orderBy(desc(pages.createdAt))
 			.limit(5);
 
-        const recentNotesPromise = db
+		const recentNotesPromise = db
 			.select({
 				id: notes.id,
 				content: notes.content,
@@ -54,17 +61,21 @@ export const load = (async ({locals}) => {
 			.orderBy(desc(notes.createdAt))
 			.limit(3);
 
-            const [workspaces,recentPages,recentNotes] = await Promise.all([workspacesPromise, recentPagesPromise, recentNotesPromise])
+		const [workspaces, recentPages, recentNotes] = await Promise.all([
+			workspacesPromise,
+			recentPagesPromise,
+			recentNotesPromise
+		]);
 
-    return {
-        user: locals.session.user,
-        workspaces,
-        recentPages,
-        recentNotes,
-    }
-    } else {
-        return{
-            user: null,
-        }
-    }
+		return {
+			user: locals.session.user,
+			workspaces,
+			recentPages,
+			recentNotes
+		};
+	} else {
+		return {
+			user: null
+		};
+	}
 }) satisfies LayoutServerLoad;

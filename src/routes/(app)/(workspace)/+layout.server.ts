@@ -11,8 +11,6 @@ export const load = (async ({ locals, route, params, untrack }) => {
 	const workspaceId =
 		isPage && params.pid ? await getWorkspaceIDFromPageId(params.pid) : params.wid;
 
-    console.log('(Workspace) layout')
-
 	if (!workspaceId) {
 		error(404, 'Not Found!');
 	}
