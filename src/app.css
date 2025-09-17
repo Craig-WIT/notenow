@@ -4,27 +4,33 @@
 @plugin "daisyui";
 
 @plugin "daisyui" {
-    themes:
-        light --default,
-        black --prefersdark;
+	themes:
+		light --default,
+		black --prefersdark;
 }
 
 @custom-variant no-js {
-    &:where(html.no-js *) {
-        @slot;
-    }
+	&:where(html.no-js *) {
+		@slot;
+	}
 }
 
 .bprogress .bar {
-    background: var(--color-orange-600);
+	background: var(--color-orange-600);
 }
 
 @layer dropdown-menu {
-    .dropdown-menu {
-        @apply bg-base-200 border-base-300 z-1 mt-4 ml-0 min-w-52 rounded-md border-1 p-2 shadow-md transform-none!;
-    }
+	.dropdown-menu {
+		@apply z-1 mt-4 ml-0 min-w-52 transform-none! rounded-md border-1 border-base-300 bg-base-200 p-2 shadow-md;
+	}
 }
 
-/* div { outline: 1px solid red; }
-ul  { outline: 1px solid green; }
-li  { outline: 1px solid blue; } */
+div {
+	outline: 1px solid red;
+}
+ul {
+	outline: 1px solid green;
+}
+li {
+	outline: 1px solid blue;
+}
