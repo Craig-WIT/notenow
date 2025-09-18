@@ -4,14 +4,14 @@
 	import type { PageProps } from './$types';
 	import FormMessage from '$components/FormMessage.svelte';
 
-	let { data, form }: PageProps = $props();
+	let { data, form }: PageProps & { form: { message: string; name?: string } } = $props();
 </script>
 
 <div class="p-5">
 	<div class="card prose w-full rounded-md border-1 border-base-300 bg-base-200">
 		<div class="card-body">
 			{#if form?.message}
-				<FormMessage message={form.message} />
+				<FormMessage formMessage={form?.message} />
 			{/if}
 			<form method="POST" action="?/createWorkspace">
 				<label for="ws-name">Name</label>

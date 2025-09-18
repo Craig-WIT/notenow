@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import { CircleCheck, CircleX } from '@lucide/svelte';
 
-	let { message }: { message: string } = $props();
+	let { formMessage }: { formMessage: string } = $props();
 </script>
 
 <div
@@ -17,5 +17,5 @@
 >
 	{#if page.status == 200}<CircleCheck />{/if}
 	{#if page.status >= 400}<CircleX />{/if}
-	<span>{message}</span>
+	<span>{formMessage}</span>
 </div>
