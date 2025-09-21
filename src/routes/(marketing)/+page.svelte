@@ -8,12 +8,12 @@
 <section class="hero bg-base-100 py-30">
 	<div class="container mx-auto flex flex-col items-center lg:flex-row">
 		<div class="text-center lg:w-1/2 lg:text-left">
-			<h2 class="mb-6 text-5xl font-bold">Capture your thoughts, anywhere, anytime.</h2>
-			<p class="mb-6">
+			<h2 class="mb-6 ml-6 text-5xl font-bold">Capture your thoughts, anywhere, anytime.</h2>
+			<p class="mb-6 ml-6">
 				A simple, fast, and beautiful notes app that works across all your devices.
 			</p>
-			<div class="space-x-4">
-				<a href="/register" class="btn btn-primary btn-lg">Get Started - It's Free</a>
+			<div class="ml-6 space-x-4">
+				<a href="/register" class="btn btn-lg btn-primary">Get Started - It's Free</a>
 				<a href="#features" class="btn btn-outline btn-lg">Learn More</a>
 			</div>
 		</div>
@@ -24,22 +24,22 @@
 	<div class="container mx-auto text-center">
 		<h3 class="mb-10 text-3xl font-bold">Why choose NoteNow?</h3>
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-			<div class="card bg-base-100 rounded-md p-6 shadow-md">
+			<div class="card rounded-md bg-base-100 p-6 shadow-md">
 				<div class="mb-4 text-4xl">🔄</div>
 				<h4 class="mb-2 font-bold">Sync Across Devices</h4>
 				<p>Access your notes from anywhere - desktop, tablet, or mobile.</p>
 			</div>
-			<div class="card bg-base-100 rounded-md p-6 shadow-md">
+			<div class="card rounded-md bg-base-100 p-6 shadow-md">
 				<div class="mb-4 text-4xl">🔍</div>
 				<h4 class="mb-2 font-bold">Powerful Search</h4>
 				<p>Find exactly what you need with our lightning-fast search.</p>
 			</div>
-			<div class="card bg-base-100 rounded-md p-6 shadow-md">
+			<div class="card rounded-md bg-base-100 p-6 shadow-md">
 				<div class="mb-4 text-4xl">🎨</div>
 				<h4 class="mb-2 font-bold">Rich Formatting</h4>
 				<p>Make your notes beautiful with rich text, images, and more.</p>
 			</div>
-			<div class="card bg-base-100 rounded-md p-6 shadow-md">
+			<div class="card rounded-md bg-base-100 p-6 shadow-md">
 				<div class="mb-4 text-4xl">🔒</div>
 				<h4 class="mb-2 font-bold">End-to-End Encryption</h4>
 				<p>Your notes are secure and private, just for your eyes.</p>
@@ -65,15 +65,15 @@
 			<input
 				type="email"
 				placeholder="Enter your email"
-				class="input input-lg input-bordered w-full max-w-xs rounded-md"
+				class="input-bordered input input-lg w-full max-w-xs rounded-md"
 				required
 			/>
-			<button type="submit" class="btn btn-lg btn-primary rounded-md">Get Started</button>
+			<button type="submit" class="btn rounded-md btn-lg btn-primary">Get Started</button>
 		</form>
 	</div>
 </section>
 
-<footer class="bg-primary text-primary-content py-10">
+<footer class="bg-primary py-10 text-primary-content">
 	<div class="container mx-auto text-center">
 		<p>&copy; {new Date().getFullYear()} NoteNow. All rights reserved.</p>
 	</div>

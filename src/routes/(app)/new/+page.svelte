@@ -3,8 +3,9 @@
 	import { CircleCheck, CircleX } from '@lucide/svelte';
 	import type { PageProps } from './$types';
 	import FormMessage from '$components/FormMessage.svelte';
+	import { enhance } from '$app/forms';
 
-	let { data, form }: PageProps & { form: { message: string; name?: string } } = $props();
+	let { data, form }: PageProps = $props();
 </script>
 
 <div class="p-5">
@@ -13,7 +14,7 @@
 			{#if form?.message}
 				<FormMessage formMessage={form?.message} />
 			{/if}
-			<form method="POST" action="?/createWorkspace">
+			<form method="POST" action="?/createWorkspace" use:enhance>
 				<label for="ws-name">Name</label>
 				<input
 					id="ws-name"

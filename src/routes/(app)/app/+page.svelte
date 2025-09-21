@@ -17,8 +17,8 @@
 	</span>
 {/snippet}
 
-<div class=" h-full overflow-y-auto">
-	<div class="prose container! mx-auto pb-10">
+<div class="ml-6 h-full overflow-y-auto">
+	<div class="container! mx-auto prose pb-10">
 		<div>
 			<h2 class="text-3xl">Welcome, {data.user?.name}</h2>
 		</div>
@@ -29,7 +29,7 @@
 				{#each data.workspaces as workspace}
 					<a href="/w/{workspace.id}" class="no-underline">
 						<div
-							class="card bg-base-200 hover:bg-base-300 border-base-300 flex flex-row items-center rounded-md border-1 p-4"
+							class="card flex flex-row items-center rounded-md border-1 border-base-300 bg-base-200 p-4 hover:bg-base-300"
 						>
 							<div class="avatar avatar-placeholder">
 								<div class=" w-12 rounded-md bg-blue-700">
@@ -48,7 +48,7 @@
 			<div>
 				<p class="text-center">No Workspaces Yet</p>
 				<div class="text-end">
-					<a href="/new" class="btn btn-primary rounded-md">Create a Workspace</a>
+					<a href="/new" class="btn rounded-md btn-primary">Create a Workspace</a>
 				</div>
 			</div>
 		{/if}
@@ -58,7 +58,7 @@
 				{#each data.recentPages as page}
 					<a href="/p/{page.id}" class="no-underline">
 						<div
-							class="card bg-base-200 hover:bg-base-300 border-base-300 flex h-full justify-between rounded-md border-1 p-4"
+							class="card flex h-full justify-between rounded-md border-1 border-base-300 bg-base-200 p-4 hover:bg-base-300"
 						>
 							<div>
 								<StickyNote size="22" class="mb-3" />
@@ -82,7 +82,7 @@
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 				{#each data.recentNotes as note}
 					<div
-						class="card bg-base-200 border-base-300 flex h-full justify-between rounded-md border-1 p-4"
+						class="card flex h-full justify-between rounded-md border-1 border-base-300 bg-base-200 p-4"
 					>
 						<blockquote class="mt-0 mb-0">
 							{note.content.slice(0, 100)}...

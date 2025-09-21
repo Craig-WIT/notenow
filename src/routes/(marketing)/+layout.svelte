@@ -4,7 +4,7 @@
 	import { page } from '$app/state';
 
 	let { children, data }: LayoutProps = $props();
-    
+
 	const menuItems = [
 		{
 			path: '/',
@@ -31,7 +31,7 @@
 
 <header class="bg-base-100 py-4">
 	<div class="container mx-auto flex items-center justify-between">
-		<h1 class="text-2xl font-bold">
+		<h1 class="ml-6 text-2xl font-bold">
 			<a class="flex items-center no-underline" href="/"
 				><NotebookPen /> <span class="ms-2">NoteNow</span></a
 			>
@@ -51,11 +51,11 @@
 				{/each}
 
 				<li>
-                    {#if data.user}
-                    <a href="/app" class="btn rounded-md bg-orange-600 text-white">Dashboard</a>
-                    {:else}
-					<a href="/signin" class="btn btn-primary rounded-md">Login</a>
-                    {/if}
+					{#if data.user}
+						<a href="/app" class="btn rounded-md bg-orange-600 text-white">Dashboard</a>
+					{:else}
+						<a href="/signin" class="btn rounded-md btn-primary">Login</a>
+					{/if}
 				</li>
 			</ul>
 		</nav>

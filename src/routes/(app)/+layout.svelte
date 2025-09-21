@@ -157,7 +157,7 @@
 	</div>
 
 	<!-- Page content here -->
-	<div class=" w-full flex-1 overflow-y-hidden">
+	<div class="w-full flex-1 overflow-y-hidden">
 		{@render children()}
 	</div>
 </div>

@@ -46,7 +46,7 @@ export const actions = {
 		} catch (error) {
 			// Report
 			console.log(error);
-			return fail(500, { message: 'An error has occurred!' });
+			return fail(500, { message: 'An error has occurred!', name });
 		}
 		redirect(303, `/w/${_newWorkspace.id}`);
 		// return { message: 'Workspace created successfully!' };
