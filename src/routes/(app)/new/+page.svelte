@@ -3,9 +3,13 @@
 	import { CircleCheck, CircleX } from '@lucide/svelte';
 	import type { PageProps } from './$types';
 	import FormMessage from '$components/FormMessage.svelte';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	let { data, form }: PageProps = $props();
+
+	let isSubmitting = $state(false);
 </script>
 
 <div class="p-5">
@@ -14,7 +18,25 @@
 			{#if form?.message}
 				<FormMessage formMessage={form?.message} />
 			{/if}
-			<form method="POST" action="?/createWorkspace" use:enhance>
+			<form
+				method="POST"
+				action="?/createWorkspace"
+				use:enhance={() => {
+					isSubmitting = true;
+					return ({ result, update }) => {
+						if (result.type === 'failure') {
+							toast.error((result.data?.message as string) || 'Failed to create workspace');
+						} else if (result.type === 'redirect') {
+							toast.success('Workspace created successfully!');
+							goto(result.location, { invalidateAll: true });
+						} else {
+							applyAction(result);
+						}
+						isSubmitting = false;
+						// update();
+					};
+				}}
+			>
 				<label for="ws-name">Name</label>
 				<input
 					id="ws-name"
@@ -23,7 +45,15 @@
 					class="input w-full rounded-md bg-base-200"
 					type="text"
 				/>
-				<button class="btn mt-4 w-full rounded-md btn-primary" type="submit">Submit</button>
+				<button
+					disabled={isSubmitting}
+					class="btn mt-4 w-full rounded-md btn-primary"
+					type="submit"
+				>
+					{#if isSubmitting}
+						<span class="loading loading-spinner"></span>
+					{/if}Submit</button
+				>
 			</form>
 		</div>
 	</div>

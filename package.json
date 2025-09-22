@@ -52,6 +52,7 @@
 		"dotenv": "^17.2.2",
 		"drizzle-seed": "^0.3.1",
 		"pg": "^8.16.3",
-		"postgres": "^3.4.5"
+		"postgres": "^3.4.5",
+		"svelte-sonner": "^1.0.5"
 	}
 }
