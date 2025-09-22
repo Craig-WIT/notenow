@@ -4,6 +4,7 @@
 	import '@bprogress/core/css';
 	import '../app.css';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { Toaster } from 'svelte-sonner';
 
 	BProgress.configure({ showSpinner: false });
 
@@ -23,6 +24,7 @@
 	});
 </script>
 
+<Toaster />
 <svelte:head>
 	<title>{page.data.title ? `${page.data.title} | NoteNow` : 'NoteNow'}</title>
 	<meta
