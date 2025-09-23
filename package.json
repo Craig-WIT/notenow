@@ -51,7 +51,10 @@
 		"daisyui": "^5.0.54",
 		"dotenv": "^17.2.2",
 		"drizzle-seed": "^0.3.1",
+		"formsnap": "^2.0.1",
 		"pg": "^8.16.3",
-		"postgres": "^3.4.5"
+		"postgres": "^3.4.5",
+		"sveltekit-superforms": "^2.27.1",
+		"zod": "^3.25.76"
 	}
 }

@@ -3,12 +3,17 @@ import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { roles, workspaceAccess, workspaces } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { workspaceSchema } from '$lib/schemas/workspace-schema';
 
 export const load = (async ({ locals }) => {
 	if (!locals.session) {
 		redirect(307, '/signin');
 	}
-	return {};
+	return {
+		form: await superValidate(zod(workspaceSchema))
+	};
 }) satisfies PageServerLoad;
 
 export const actions = {
