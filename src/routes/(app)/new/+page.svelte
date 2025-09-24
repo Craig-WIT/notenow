@@ -5,15 +5,22 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { workspaceSchema } from '$lib/schemas/workspace-schema';
 	import { Field, Control, Label, Description, FieldErrors } from 'formsnap';
+	import { toast } from 'svelte-sonner';
 
 	let { data }: PageProps = $props();
 
 	const form = superForm(data.form, {
 		validators: zodClient(workspaceSchema),
-		validationMethod: 'oninput'
+		validationMethod: 'oninput',
+		delayMs: 500,
+		onResult: ({ result }) => {
+			if (result.type === 'redirect') {
+				toast.success('Workspace saved successfully!');
+			}
+		}
 	});
 
-	const { form: formData, enhance, message } = form;
+	const { form: formData, enhance, message, submitting, delayed } = form;
 </script>
 
 <div class="p-5">
@@ -25,7 +32,7 @@
 			<form method="POST" action="?/createWorkspace" use:enhance>
 				<Field {form} name="name">
 					<Control>
-						{#snippet children(props)}
+						{#snippet children({ props })}
 							<Label>Name</Label>
 							<input
 								type="text"
@@ -38,7 +45,12 @@
 					<Description>A name for your workspace.</Description>
 					<FieldErrors class="mt-1 text-red-400" />
 				</Field>
-				<button class="btn mt-4 w-full rounded-md btn-primary" type="submit"> Submit</button>
+				<button disabled={$submitting} class="btn mt-4 w-full rounded-md btn-primary" type="submit">
+					{#if $delayed}
+						<span class="loading loading-spinner"></span>
+					{/if}
+					Submit</button
+				>
 			</form>
 		</div>
 	</div>

@@ -1,9 +1,9 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { roles, workspaceAccess, workspaces } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms';
+import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { workspaceSchema } from '$lib/schemas/workspace-schema';
 
@@ -18,17 +18,19 @@ export const load = (async ({ locals }) => {
 
 export const actions = {
 	createWorkspace: async ({ request, locals }) => {
+		await new Promise((resolve) => setTimeout(resolve, 3000));
+		const form = await superValidate(request, zod(workspaceSchema));
+
 		if (!locals.session) {
-			return fail(401, { message: 'Unauthorized', name: '' });
+			return message(form, 'Unauthorized', { status: 401 });
 		}
-		const data = await request.formData();
-		const name = data.get('name');
-		if (!name) {
-			return fail(400, { message: 'Name is Required!', name: '' });
+
+		if (!form.valid) {
+			return fail(400, { form });
 		}
-		if (name.toString().length < 4) {
-			return fail(400, { message: 'Name is too short!', name });
-		}
+
+		const { name } = form.data;
+
 		let _newWorkspace;
 		try {
 			_newWorkspace = await db.transaction(async (tx) => {
@@ -51,7 +53,9 @@ export const actions = {
 		} catch (error) {
 			// Report
 			console.log(error);
-			return fail(500, { message: 'An error has occurred!', name });
+			return message(form, 'An error has occured!', { status: 500 });
+
+			//return fail(500, { message: 'An error has occurred!', name });
 		}
 		redirect(303, `/w/${_newWorkspace.id}`);
 		// return { message: 'Workspace created successfully!' };
