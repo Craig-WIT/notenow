@@ -12,6 +12,7 @@
 		validators: zodClient(workspaceSchema),
 		validationMethod: 'oninput',
 		delayMs: 500,
+		resetForm: false,
 		onResult: ({ result }) => {
 			if (result.type === 'redirect') {
 				toast.success('Workspace saved successfully!');
@@ -27,7 +28,7 @@
 		{#if $message}
 			<FormMessage formMessage={$message} />
 		{/if}
-		<form method="POST" action="?/createWorkspace" use:enhance>
+		<form method="POST" use:enhance>
 			<Field {form} name="name">
 				<Control>
 					{#snippet children({ props })}
