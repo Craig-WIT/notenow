@@ -4,6 +4,7 @@
 	import { enhance } from '$app/forms';
 	import { ChevronDown, MoonIcon, NotebookPen, Plus, StickyNote, Sun } from '@lucide/svelte';
 	import { page } from '$app/state';
+	import { goto, preloadData, pushState } from '$app/navigation';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -62,7 +63,22 @@
 								<li class="mx-1">No Workspaces Yet</li>
 							{/each}
 							<li>
-								<a href="/new" class="btn mt-3 w-full rounded-md bg-base-300 btn-sm">
+								<a
+									onclick={async (e) => {
+										if (e.shiftKey || e.metaKey || e.ctrlKey) return;
+										e.preventDefault();
+										(e.currentTarget.closest('[popover') as HTMLElement)?.hidePopover();
+										const { href } = e.currentTarget;
+										const result = await preloadData(href);
+										if (result.type === 'loaded' && result.status === 200) {
+											pushState(href, { addWorkspaceData: result.data });
+										} else {
+											goto(href);
+										}
+									}}
+									href="/new"
+									class="btn mt-3 w-full rounded-md bg-base-300 btn-sm"
+								>
 									<Plus size="16" />
 									New Workspace
 								</a>
@@ -161,3 +177,5 @@
 		{@render children()}
 	</div>
 </div>
+
+{#if page.state.addWorkspaceData}{/if}
