@@ -5,8 +5,6 @@
 	let { data }: PageProps = $props();
 </script>
 
-<div class="p-5">
-	<WorkspaceForm form={data.form} />
-</div>
+<WorkspaceForm form={data.form} />
 
 <!-- <SuperDebug data={$formData} /> -->
