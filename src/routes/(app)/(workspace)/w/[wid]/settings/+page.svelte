@@ -2,6 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import type { PageProps } from './$types';
+	import { handlePopoverLink } from '$lib/utils';
 
 	let { data }: PageProps = $props();
 
@@ -9,7 +10,9 @@
 </script>
 
 <h3>Settings</h3>
-<a href="/w/{data.workspace.id}/edit" class="btn">Edit Workspace</a>
+<a onclick={handlePopoverLink('editWorkspace')} href="/w/{data.workspace.id}/edit" class="btn"
+	>Edit Workspace</a
+>
 <form
 	action="/w/{data.workspace.id}?/deleteWorkspace"
 	method="POST"

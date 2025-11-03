@@ -4,6 +4,7 @@
 
 	import { page } from '$app/state';
 	import FormMessage from '$components/FormMessage.svelte';
+	import { handlePopoverLink } from '$lib/utils';
 
 	let { data, children }: LayoutProps = $props();
 </script>
@@ -23,7 +24,11 @@
 			</div>
 			<div>
 				<!-- TODO: CHECK IF USER CAN UPDATE WORKSPACE -->
-				<a class="btn rounded-md btn-sm" href="/w/{data.workspace.id}/edit">Edit</a>
+				<a
+					onclick={handlePopoverLink('editWorkspace')}
+					class="btn rounded-md btn-sm"
+					href="/w/{data.workspace.id}/edit">Edit</a
+				>
 			</div>
 		</div>
 		<div class="flex-1 overflow-y-auto p-2">

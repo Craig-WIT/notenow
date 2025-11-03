@@ -15,7 +15,7 @@
 		resetForm: false,
 		onResult: ({ result }) => {
 			if (result.type === 'redirect') {
-				toast.success('Workspace saved successfully!');
+				toast.success(`Workspace saved successfully!`);
 			}
 		}
 	});

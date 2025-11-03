@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { FilePenLine, ShieldUser, StickyNote, View } from '@lucide/svelte';
 	import type { PageProps } from './$types';
+	import { handlePopoverLink } from '$lib/utils';
 
 	let { data }: PageProps = $props();
 </script>
@@ -48,7 +49,11 @@
 			<div>
 				<p class="text-center">No Workspaces Yet</p>
 				<div class="text-end">
-					<a href="/new" class="btn rounded-md btn-primary">Create a Workspace</a>
+					<a
+						onclick={handlePopoverLink('newWorkspace')}
+						href="/new"
+						class="btn rounded-md btn-primary">Create a Workspace</a
+					>
 				</div>
 			</div>
 		{/if}

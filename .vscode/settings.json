@@ -4,5 +4,6 @@
 	"workbench.editor.labelFormat": "short",
 	"workbench.tree.indent": 20,
 	"explorer.compactFolders": false,
-	"editor.defaultFormatter": "esbenp.prettier-vscode"
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"postman.settings.dotenv-detection-notification-visibility": false
 }
