@@ -22,5 +22,10 @@ export const auth = betterAuth({
 				unique: true
 			}
 		}
+	},
+	advanced: {
+		database: {
+			generateId: false
+		}
 	}
 });
