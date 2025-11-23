@@ -5,6 +5,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { userLoginSchema } from '$lib/schemas/login-schema';
 	import { userRegisterSchema } from '$lib/schemas/register-schema';
+	import { AtSign, Lock, NotebookPen, User } from '@lucide/svelte';
+	import { Control, Field, FieldErrors } from 'formsnap';
 
 	let { data }: PageProps = $props();
 
@@ -12,7 +14,7 @@
 		validators: zodClient(userLoginSchema)
 	});
 
-	const registerForm = superForm(data.loginForm, {
+	const registerForm = superForm(data.registerForm, {
 		validators: zodClient(userRegisterSchema)
 	});
 
@@ -34,12 +36,12 @@
 </script>
 
 <div class=" flex h-screen w-full items-center justify-center p-5">
-	<div class="card bg-base-200 prose border-base-300 w-full max-w-100 rounded-md border-1">
+	<div class="card prose w-full max-w-100 rounded-md border-1 border-base-300 bg-base-200">
 		<div class="card-body">
 			<h1 class="mb-0 mb-4 flex items-center">
 				<NotebookPen /> <span class="ms-2 text-2xl">NotesApp</span>
 			</h1>
-			<h2 class="card-title mt-0 mb-0">
+			<h2 class="mt-0 mb-0 card-title">
 				{page.params.authType === 'register' ? 'Sign Up' : 'Sign In'}
 			</h2>
 			<p class="mb-0 text-sm">Please enter your details.</p>
@@ -52,7 +54,7 @@
 								<Control>
 									{#snippet children({ props })}
 										<div class="field">
-											<label class="input bg-base-200 w-full rounded-md">
+											<label class="input w-full rounded-md bg-base-200">
 												<User size="16" />
 												<input
 													placeholder="mail@site.com"
@@ -71,7 +73,7 @@
 							<Control>
 								{#snippet children({ props })}
 									<div class="field">
-										<label class="input bg-base-200 w-full rounded-md">
+										<label class="input w-full rounded-md bg-base-200">
 											<Lock size="16" />
 											<input
 												{...props}
@@ -87,7 +89,7 @@
 						</Field>
 						<button
 							disabled={$loginFormSubmitting}
-							class="btn btn-primary mt-4 w-full rounded-md"
+							class="btn mt-4 w-full rounded-md btn-primary"
 							type="submit"
 						>
 							{#if $loginFormDelayed}
@@ -103,7 +105,7 @@
 								<Control>
 									{#snippet children({ props })}
 										<div class="field">
-											<label class="input bg-base-200 w-full rounded-md">
+											<label class="input w-full rounded-md bg-base-200">
 												<User size="16" />
 												<input
 													placeholder="mail@site.com"
@@ -123,7 +125,7 @@
 								<Control>
 									{#snippet children({ props })}
 										<div class="field">
-											<label class="input bg-base-200 w-full rounded-md">
+											<label class="input w-full rounded-md bg-base-200">
 												<AtSign size="16" />
 												<input
 													placeholder="Username"
@@ -143,7 +145,7 @@
 								<Control>
 									{#snippet children({ props })}
 										<div class="field">
-											<label class="input bg-base-200 w-full rounded-md">
+											<label class="input w-full rounded-md bg-base-200">
 												<Lock size="16" />
 												<input
 													placeholder="Name"
@@ -164,7 +166,7 @@
 								<Control>
 									{#snippet children({ props })}
 										<div class="field">
-											<label class="input bg-base-200 w-full rounded-md">
+											<label class="input w-full rounded-md bg-base-200">
 												<User size="16" />
 												<input
 													placeholder="Password"
@@ -185,7 +187,7 @@
 								<Control>
 									{#snippet children({ props })}
 										<div class="field">
-											<label class="input bg-base-200 w-full rounded-md">
+											<label class="input w-full rounded-md bg-base-200">
 												<Lock size="16" />
 												<input
 													placeholder="Confirm Password"
@@ -203,7 +205,7 @@
 
 						<button
 							disabled={$registerFormSubmitting}
-							class="btn btn-primary mt-4 w-full rounded-md"
+							class="btn mt-4 w-full rounded-md btn-primary"
 							type="submit"
 						>
 							{#if $registerFormDelayed}
