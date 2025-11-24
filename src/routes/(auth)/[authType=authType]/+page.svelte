@@ -7,6 +7,7 @@
 	import { userRegisterSchema } from '$lib/schemas/register-schema';
 	import { AtSign, Lock, NotebookPen, User } from '@lucide/svelte';
 	import { Control, Field, FieldErrors } from 'formsnap';
+	import FormMessage from '$components/FormMessage.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -45,6 +46,10 @@
 				{page.params.authType === 'register' ? 'Sign Up' : 'Sign In'}
 			</h2>
 			<p class="mb-0 text-sm">Please enter your details.</p>
+
+			{#if $loginFormMessage || $registerFormMessage}
+				<FormMessage formMessage={$loginFormMessage || $registerFormMessage} />
+			{/if}
 
 			<div class="mt-4">
 				{#if page.params.authType === 'signin'}
@@ -99,7 +104,7 @@
 					</form>
 				{/if}
 				{#if page.params.authType === 'register'}
-					<form method="POST" use:registerFormEnhance>
+					<form method="POST" use:registerFormEnhance action="?/register">
 						<div class="mb-4">
 							<Field form={registerForm} name="email">
 								<Control>

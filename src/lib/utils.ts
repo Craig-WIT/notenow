@@ -2,6 +2,7 @@ import type { MouseEventHandler } from 'svelte/elements';
 import { goto, preloadData, pushState } from '$app/navigation';
 import type { PageData as AddWorkspaceData } from '../routes/(app)/new/$types';
 import type { PageData as EditWorkspaceData } from '../routes/(app)/(workspace)/w/[wid]/edit/$types';
+import crypto from 'crypto';
 
 export const handlePopoverLink =
 	(page: 'newWorkspace' | 'editWorkspace'): MouseEventHandler<HTMLAnchorElement> =>
@@ -22,3 +23,9 @@ export const handlePopoverLink =
 			goto(href);
 		}
 	};
+
+	export function getGravatarUrl(email: string, size = 80) {
+	const trimmedEmail = email.trim().toLowerCase();
+	const hash = crypto.createHash('sha256').update(trimmedEmail).digest('hex');
+	return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
+}
