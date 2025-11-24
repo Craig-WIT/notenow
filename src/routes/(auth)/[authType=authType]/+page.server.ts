@@ -7,6 +7,7 @@ import { userRegisterSchema } from '$lib/schemas/register-schema';
 import { auth } from '$lib/server/auth';
 import { getGravatarUrl } from '$lib/utils';
 import { APIError } from 'better-auth';
+import { env } from '$env/dynamic/private';
 
 export const load = (async ({ locals }) => {
 	if (locals.session) {
@@ -16,7 +17,7 @@ export const load = (async ({ locals }) => {
 		loginForm: await superValidate(zod(userLoginSchema)),
 		registerForm: await superValidate(
 			{
-				email: 'test@test.com',
+				email: 'sayopid586@aikunkun.com',
 				name: 'Test',
 				username: 'test',
 				password: '123456789',
@@ -44,14 +45,15 @@ export const actions = {
 					email,
 					name,
 					password,
-					image: getGravatarUrl(email)
+					image: getGravatarUrl(email),
+					callbackURL: `${env.BETTER_AUTH_URL}/app`
 				}
 			});
 			console.log(res);
 			return message(form, 'A Confirmation Email has been sent to verify your account');
 		} catch (error) {
 			let errorMessage = 'An error has occured';
-			console.log(error);
+
 			if (error instanceof APIError) {
 				const duplicateUsername = error?.body?.details?.constraint_name === 'users_username_unique';
 				errorMessage = duplicateUsername ? 'Username must be unique' : error.message;
