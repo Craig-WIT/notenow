@@ -1,7 +1,9 @@
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	if (!event.locals.session) {
+	const { pathname } = event.url;
+
+	if (!event.locals.session && pathname !== '/signin' && pathname !== '/register') {
 		redirect(307, '/signin');
 	}
 
