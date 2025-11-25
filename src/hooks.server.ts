@@ -5,6 +5,13 @@ import { auth } from '$lib/server/auth';
 import { building } from '$app/environment';
 
 const authHandle: Handle = async ({ event, resolve }) => {
+	const session = await auth.api.getSession({
+		headers: event.request.headers
+	});
+	if (session) {
+		console.log(session);
+		event.locals.session = session;
+	}
 	return svelteKitHandler({ event, resolve, auth, building });
 };
 

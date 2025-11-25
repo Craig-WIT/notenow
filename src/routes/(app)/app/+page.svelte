@@ -52,7 +52,7 @@
 					<a
 						onclick={handlePopoverLink('newWorkspace')}
 						href="/new"
-						class="btn rounded-md btn-primary">Create a Workspace</a
+						class="btn mr-8 rounded-md btn-primary">Create a Workspace</a
 					>
 				</div>
 			</div>
