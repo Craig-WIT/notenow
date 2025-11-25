@@ -53,7 +53,7 @@
 
 			<div class="mt-4">
 				{#if page.params.authType === 'signin'}
-					<form method="POST" use:loginFormEnhance>
+					<form method="POST" use:loginFormEnhance action="?/login">
 						<div class="mb-4">
 							<Field form={loginForm} name="email">
 								<Control>
