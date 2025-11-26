@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import { ChevronDown, MoonIcon, NotebookPen, Plus, StickyNote, Sun } from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { handlePopoverLink } from '$lib/utils';
 	import PushStateModal from './PushStateModal.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -155,7 +156,20 @@
 						</li>
 						<li><a class="rounded-md">Settings</a></li>
 					</ul>
-					<form method="POST" action="/app?/logout" use:enhance>
+					<form
+						method="POST"
+						action="/app?/logout"
+						use:enhance={() => {
+							return ({ result }) => {
+								if (result.type === 'redirect') {
+									toast.success('User logged out');
+									applyAction(result);
+								} else {
+									toast.error('Error logging out');
+								}
+							};
+						}}
+					>
 						<button
 							class="btn mt-2 w-full cursor-pointer rounded-md bg-red-700 text-white btn-sm"
 							type="submit">Signout</button
