@@ -1,15 +1,15 @@
-import { redirect, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
 import { fail, message, superValidate } from 'sveltekit-superforms';
-import { userLoginSchema } from '$lib/schemas/login-schema';
 import { zod } from 'sveltekit-superforms/adapters';
+import { userLoginSchema } from '$lib/schemas/login-schema';
 import { userRegisterSchema } from '$lib/schemas/register-schema';
 import { auth } from '$lib/server/auth';
 import { getGravatarUrl } from '$lib/utils';
-import { APIError } from 'better-auth';
+import { APIError } from 'better-auth/api';
 import { env } from '$env/dynamic/private';
 import { parse } from 'cookie';
-import { dev } from '$app/environment';
+// import { dev } from '$app/environment';
 
 export const load = (async ({ locals }) => {
 	if (locals.session) {
@@ -18,14 +18,14 @@ export const load = (async ({ locals }) => {
 	return {
 		loginForm: await superValidate(
 			{
-				email: 'sayopid586@aikunkun.com',
+				email: 'misiw75096@ihnpo.com',
 				password: '123456789'
 			},
 			zod(userLoginSchema)
 		),
 		registerForm: await superValidate(
 			{
-				email: 'sayopid586@aikunkun.com',
+				email: 'misiw75096@ihnpo.com',
 				name: 'Test',
 				username: 'test',
 				password: '123456789',
@@ -37,12 +37,34 @@ export const load = (async ({ locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
+	githubSignIn: async () => {
+		let ghRedirect;
+		try {
+			const res = await auth.api.signInSocial({
+				body: {
+					provider: 'github',
+					callbackURL: '/app'
+				}
+			});
+			ghRedirect = res.url;
+		} catch (error) {
+			console.log(error);
+			return fail(500, {
+				message: 'An error has occurred'
+			});
+		}
+		if (!ghRedirect) {
+			return fail(500, {
+				message: 'An error has occurred'
+			});
+		}
+		redirect(303, ghRedirect);
+	},
 	login: async ({ request, cookies }) => {
 		const form = await superValidate(request, zod(userLoginSchema));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
 		const { email, password } = form.data;
 
 		try {
@@ -56,7 +78,7 @@ export const actions = {
 				asResponse: true
 			});
 			if (res.status !== 200) {
-				return message(form, (await res.json())?.message || 'An error has occured', {
+				return message(form, (await res.json())?.message || 'An error has occurred', {
 					status: 400
 				});
 			}
@@ -67,13 +89,14 @@ export const actions = {
 					path: '/',
 					httpOnly: true,
 					sameSite: 'lax',
-					secure: !dev,
+					secure: false,
 					maxAge: +parsedCookie['Max-Age']
 				});
 			}
-		} catch (error) {
-			return message(form, 'An error has occured', { status: 500 });
-			console.log(error);
+		} catch {
+			return message(form, 'An error has occurred', {
+				status: 500
+			});
 		}
 		redirect(303, '/app');
 	},
@@ -97,13 +120,12 @@ export const actions = {
 					callbackURL: `${env.BETTER_AUTH_URL}/app`
 				}
 			});
-			return message(form, 'A Confirmation Email has been sent to verify your account');
+			return message(form, 'A Confirmation E-mail has been sent to your email address.');
 		} catch (error) {
-			let errorMessage = 'An error has occured';
-
+			let errorMessage = 'An error has occurred!';
 			if (error instanceof APIError) {
 				const duplicateUsername = error?.body?.details?.constraint_name === 'users_username_unique';
-				errorMessage = duplicateUsername ? 'Username must be unique' : error.message;
+				errorMessage = duplicateUsername ? 'Username already exists' : error.message;
 			}
 			return message(form, errorMessage, { status: 400 });
 		}

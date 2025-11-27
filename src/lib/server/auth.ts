@@ -21,15 +21,26 @@ export const auth = betterAuth({
 		sendOnSignUp: true,
 		autoSignInAfterVerification: true,
 		sendVerificationEmail: async ({ user, url }) => {
-			const { data, error } = await resend.emails.send({
-				from: 'onboarding@resend.dev',
-				to: 'craig.grehan3@gmail.com',
+			const { error } = await resend.emails.send({
+				// from: 'onboarding@resend.dev'
+				from: 'noreply@transactional.alialaa.dev',
+				to: user.email,
 				subject: 'Verify your email address',
 				text: `Click the link to verify your email: ${url}`
 			});
-			console.log(data);
 			if (error) {
-				console.log(user);
+				// report
+			}
+		}
+	},
+	socialProviders: {
+		github: {
+			clientId: env.GITHUB_CLIENT_ID,
+			clientSecret: env.GITHUB_CLIENT_SECRET,
+			mapProfileToUser(profile) {
+				return {
+					username: profile.login
+				};
 			}
 		}
 	},
