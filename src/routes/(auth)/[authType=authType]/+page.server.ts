@@ -37,16 +37,18 @@ export const load = (async ({ locals }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	githubSignIn: async () => {
+	githubSignIn: async ({ url }) => {
 		let ghRedirect;
 		try {
 			const res = await auth.api.signInSocial({
 				body: {
 					provider: 'github',
-					callbackURL: '/app'
+					callbackURL: url.searchParams.get('redirectTo') || '/app'
 				}
 			});
+			console.log(res);
 			ghRedirect = res.url;
+			console.log(ghRedirect);
 		} catch (error) {
 			console.log(error);
 			return fail(500, {
@@ -60,7 +62,7 @@ export const actions = {
 		}
 		redirect(303, ghRedirect);
 	},
-	login: async ({ request, cookies }) => {
+	login: async ({ request, cookies, url }) => {
 		const form = await superValidate(request, zod(userLoginSchema));
 		if (!form.valid) {
 			return fail(400, { form });
@@ -98,7 +100,7 @@ export const actions = {
 				status: 500
 			});
 		}
-		redirect(303, '/app');
+		redirect(303, url.searchParams.get('redirectTo') || '/app');
 	},
 	register: async ({ request }) => {
 		const form = await superValidate(request, zod(userRegisterSchema));

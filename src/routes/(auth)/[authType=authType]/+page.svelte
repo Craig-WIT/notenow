@@ -34,6 +34,8 @@
 		submitting: registerFormSubmitting,
 		delayed: registerFormDelayed
 	} = registerForm;
+
+	let redirectTo = $derived(page.url.searchParams.get('redirectTo'));
 </script>
 
 <div class=" flex h-screen w-full items-center justify-center p-5">
@@ -53,7 +55,11 @@
 
 			<div class="mt-4">
 				{#if page.params.authType === 'signin'}
-					<form method="POST" action="?/login" use:loginFormEnhance>
+					<form
+						method="POST"
+						action="?/login{redirectTo ? `&redirectTo=${redirectTo}` : ''}"
+						use:loginFormEnhance
+					>
 						<div class="mb-4">
 							<Field form={loginForm} name="email">
 								<Control>
@@ -227,7 +233,11 @@
 					</p>
 					<p class="mt-0 mb-0">Don't have an account? <a href="/register">Sign up</a>.</p>
 				{/if}
-				<form method="POST" class="mt-4" action={'?/githubSignIn'}>
+				<form
+					method="POST"
+					class="mt-4"
+					action="?/githubSignIn{redirectTo ? `&redirectTo=${redirectTo}` : ''}"
+				>
 					<button class="btn w-full rounded-md bg-black text-white" type="submit"
 						><Github size="18" /> Sign in with GitHub</button
 					>

@@ -1,12 +1,13 @@
-import { getWorkspaceIDFromPageId } from '$lib/server/db/utils';
+import { getWorkspaceIDFromPageId, requireLogin } from '$lib/server/db/utils';
 import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { pageAccess, pages, workspaces } from '$lib/server/db/schema';
 import { and, eq } from 'drizzle-orm';
 
-export const load = (async ({ locals, route, params, untrack }) => {
+export const load = (async ({ route, params, untrack }) => {
 	// TODO: Auth
+	const session = requireLogin();
 	const isPage = untrack(() => route.id.startsWith('/(app)/(workspace)/p/[pid]'));
 	const workspaceId =
 		isPage && params.pid ? await getWorkspaceIDFromPageId(params.pid) : params.wid;
@@ -33,7 +34,7 @@ export const load = (async ({ locals, route, params, untrack }) => {
 		})
 		.from(pages)
 		.innerJoin(pageAccess, eq(pages.id, pageAccess.pageId))
-		.where(and(eq(pages.workspaceId, workspaceId), eq(pageAccess.userId, locals.session.user.id)));
+		.where(and(eq(pages.workspaceId, workspaceId), eq(pageAccess.userId, session.user.id)));
 	return {
 		workspace,
 		pages: userPages
