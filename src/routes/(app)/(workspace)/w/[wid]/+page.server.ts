@@ -1,13 +1,21 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { workspaces } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { roles, workspaceAccess, workspaces } from '$lib/server/db/schema';
+import { and, eq } from 'drizzle-orm';
 import { requireLogin } from '$lib/server/db/utils';
 
-export const load = (async () => {
+export const load = (async ({ params }) => {
 	// TODO: Check user is logged in and workspace access etc
-	requireLogin();
+	const { user } = requireLogin();
+	const [wsAccess] = await db
+		.select({ workspaceid: workspaceAccess.workspaceId, role: roles.name, roleId: roles.id })
+		.from(workspaceAccess)
+		.innerJoin(roles, eq(workspaceAccess.roleId, roles.id))
+		.where(and(eq(workspaceAccess.workspaceId, params.wid), eq(workspaceAccess.userId, user.id)))
+		.limit(1);
+
+	console.log(wsAccess);
 	return {};
 }) satisfies PageServerLoad;
 
