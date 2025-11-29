@@ -1,8 +1,12 @@
 <script lang="ts">
+	import defineAbilityFor, { type Actions } from '$lib/ability';
+	import { subject } from '@casl/ability';
 	import type { PageProps } from './$types';
 	import { StickyNote } from '@lucide/svelte';
 
 	let { data }: PageProps = $props();
+
+	const ability = $derived(defineAbilityFor(data.user, data.workspaceAccess));
 </script>
 
 <h3>Pages</h3>
@@ -11,7 +15,7 @@
 		<p>No Pages Yet</p>
 		<div class="text-end">
 			<!-- TODO: Check if the user can create pages -->
-			<a href="/w/{data.workspace.id}/new" class="btn btn-primary rounded-md">Create a Page</a>
+			<a href="/w/{data.workspace.id}/new" class="btn rounded-md btn-primary">Create a Page</a>
 		</div>
 	</div>
 {:else}
@@ -19,7 +23,7 @@
 		{#each data.pages as page}
 			<a href="/p/{page.id}" class="no-underline">
 				<div
-					class="card bg-base-200 hover:bg-base-300 border-base-300 flex h-full justify-between rounded-md border-1 p-4"
+					class="card flex h-full justify-between rounded-md border-1 border-base-300 bg-base-200 p-4 hover:bg-base-300"
 				>
 					<div>
 						<StickyNote size="22" class="mb-3" />
@@ -30,3 +34,9 @@
 		{/each}
 	</div>
 {/if}
+
+{#each ['read', 'update', 'delete'] as action}
+	<div>
+		{ability.can(action as Actions, subject('Workspace', data.workspace)) ? 'YES' : 'NO'}
+	</div>
+{/each}
