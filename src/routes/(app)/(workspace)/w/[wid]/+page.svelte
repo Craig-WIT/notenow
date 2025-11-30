@@ -34,9 +34,3 @@
 		{/each}
 	</div>
 {/if}
-
-{#each ['read', 'update', 'delete'] as action}
-	<div>
-		{ability.can(action as Actions, subject('Workspace', data.workspace)) ? 'YES' : 'NO'}
-	</div>
-{/each}

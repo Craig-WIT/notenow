@@ -1,26 +1,20 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { roles, workspaceAccess, workspaces } from '$lib/server/db/schema';
-import { and, eq } from 'drizzle-orm';
-import { requireLogin } from '$lib/server/db/utils';
-import defineAbilityFor from '$lib/ability';
+import { workspaces } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
+import { getWorkspaceAccess, requireLogin } from '$lib/server/db/utils';
 import { subject } from '@casl/ability';
 
 export const load = (async ({ params }) => {
 	// TODO: Check user is logged in and workspace access etc
 	const { user } = requireLogin();
-	const [wsAccess] = await db
-		.select({ workspaceId: workspaceAccess.workspaceId, role: roles.name, roleId: roles.id })
-		.from(workspaceAccess)
-		.innerJoin(roles, eq(workspaceAccess.roleId, roles.id))
-		.where(and(eq(workspaceAccess.workspaceId, params.wid), eq(workspaceAccess.userId, user.id)))
-		.limit(1);
 
-	console.log(wsAccess);
-	const ability = defineAbilityFor(user, wsAccess);
-	console.log(ability.can('read', subject('Workspace', { id: params.wid })));
-	return { workspaceAccess: wsAccess };
+	const { workspaceAccess, ability } = await getWorkspaceAccess({ user, workspaceId: params.wid });
+	if (ability.cannot('read', subject('Workspace', { id: params.wid }))) {
+		redirect(307, '/access-denied');
+	}
+	return { workspaceAccess };
 }) satisfies PageServerLoad;
 
 export const actions = {
