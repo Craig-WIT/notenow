@@ -5,8 +5,12 @@
 	import { page } from '$app/state';
 	import FormMessage from '$components/FormMessage.svelte';
 	import { handlePopoverLink } from '$lib/utils';
+	import defineAbilityFor from '$lib/ability';
+	import { subject } from '@casl/ability';
 
 	let { data, children }: LayoutProps = $props();
+
+	let ability = $derived(defineAbilityFor(data.user, data.workspaceAccess, data.pageAccess));
 </script>
 
 <div class="flex h-full">
@@ -19,16 +23,16 @@
 			</div>
 			<div class="ms-4 flex-1">
 				<h4 class="me-2 mt-0 mb-0 line-clamp-1">{data.workspace.name}</h4>
-				<!-- TODO: Add role -->
-				<p class="text-sm opacity-70">TODO</p>
+				<h3 class="me-2 mt-0 mb-0 line-clamp-1">{data.workspaceAccess.role.toUpperCase()}</h3>
 			</div>
 			<div>
-				<!-- TODO: CHECK IF USER CAN UPDATE WORKSPACE -->
-				<a
-					onclick={handlePopoverLink('editWorkspace')}
-					class="btn rounded-md btn-sm"
-					href="/w/{data.workspace.id}/edit">Edit</a
-				>
+				{#if ability.can('update', subject('Workspace', data.workspace))}
+					<a
+						onclick={handlePopoverLink('editWorkspace')}
+						class="btn rounded-md btn-sm"
+						href="/w/{data.workspace.id}/edit">Edit</a
+					>
+				{/if}
 			</div>
 		</div>
 		<div class="flex-1 overflow-y-auto p-2">
@@ -36,16 +40,20 @@
 				<li>
 					<a class="rounded-md" href="/w/{data.workspace.id}"><StickyNote size="22" /> Pages</a>
 				</li>
-				<!-- TODO: CHECK IF USER CAN MANAGE WORKSPACE -->
-				<li>
-					<a class="rounded-md" href="/w/{data.workspace.id}/members"><User size="22" /> Members</a>
-				</li>
-				<!-- TODO: CHECK IF USER CAN CHANGE WORKSPACE SETTINGS -->
-				<li>
-					<a class="rounded-md" href="/w/{data.workspace.id}/settings"
-						><Settings size="22" />Settings</a
-					>
-				</li>
+				{#if ability.can('manage', subject('Workspace', data.workspace))}
+					<li>
+						<a class="rounded-md" href="/w/{data.workspace.id}/members"
+							><User size="22" /> Members</a
+						>
+					</li>
+				{/if}
+				{#if ability.can('update', subject('Workspace', data.workspace)) || ability.can('delete', subject('Workspace', data.workspace))}
+					<li>
+						<a class="rounded-md" href="/w/{data.workspace.id}/settings"
+							><Settings size="22" />Settings</a
+						>
+					</li>
+				{/if}
 			</ul>
 			<ul class="menu mt-4 w-full rounded-box bg-transparent p-0">
 				<li class="menu-title">Pages</li>

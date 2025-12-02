@@ -7,12 +7,16 @@
 	import { handlePopoverLink } from '$lib/utils';
 	import PushStateModal from './PushStateModal.svelte';
 	import { toast } from 'svelte-sonner';
+	import defineAbilityFor from '$lib/ability';
+	import { subject } from '@casl/ability';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
 	let selectedWorkspaceID = $derived(
-		page.route.id?.startsWith('/(app)/(workspace)/w/[wid]') && page.params.wid
+		page.route.id === '/(app)/(workspace)/w/[wid]' && page.params.wid
 	);
+
+	let ability = $derived(defineAbilityFor(data.user, page.data.workspaceAccess));
 </script>
 
 <div class="flex h-svh flex-col">
@@ -50,9 +54,7 @@
 									>
 										<div class="avatar avatar-placeholder">
 											<div class="w-10 rounded-md bg-blue-700">
-												<span class="text-lg text-white">
-													{workspace.name[0].toUpperCase()}
-												</span>
+												<span class="text-lg text-white">{workspace.name[0].toUpperCase()}</span>
 											</div>
 										</div>
 										<p>{workspace.name}</p>
@@ -70,9 +72,9 @@
 									href="/new"
 									class="btn mt-3 w-full rounded-md bg-base-300 btn-sm"
 								>
-									<Plus size="16" />
-									New Workspace
-								</a>
+									<Plus size={16} />
+									New Workspace</a
+								>
 							</li>
 						</ul>
 					</li>
@@ -100,7 +102,7 @@
 										class="items-start rounded-md"
 										href="/p/{page.id}"
 									>
-										<StickyNote size="30" class="me-1 mt-1" />
+										<StickyNote size="22" class="me-1 mt-1" />
 										<div>
 											<span class="block text-[16px]">{page.title}</span>
 											<span class="text-xs italic"><span>Workspace:</span> {page.workspace}</span>
@@ -112,16 +114,13 @@
 							{/each}
 						</ul>
 					</li>
-					<!-- TODO: CHECK IF THE USER CAN CREATE A NEW PAGE -->
-					<li class="ms-2">
-						<a
-							onclick={handlePopoverLink('newWorkspace')}
-							href="/new"
-							class="btn rounded-md bg-orange-600 px-2 font-normal text-black btn-md"
-						>
-							Create <Plus size="18" />
-						</a>
-					</li>
+					{#if page.data.workspaceId && ability.can('update', subject( 'Workspace', { id: page.data.workspaceId } ))}
+						<li class="ms-2">
+							<a class="btn rounded-md bg-orange-600 px-2 font-normal text-black btn-md">
+								Create <Plus size="18" />
+							</a>
+						</li>
+					{/if}
 				</ul>
 			</div>
 		</div>
@@ -161,11 +160,10 @@
 						action="/app?/logout"
 						use:enhance={() => {
 							return ({ result }) => {
-								if (result.type === 'redirect') {
-									toast.success('User logged out');
-									applyAction(result);
+								if (result.type === 'failure') {
+									toast.error('An error has occurred');
 								} else {
-									toast.error('Error logging out');
+									applyAction(result);
 								}
 							};
 						}}
@@ -181,7 +179,7 @@
 	</div>
 
 	<!-- Page content here -->
-	<div class="w-full flex-1 overflow-y-hidden">
+	<div class=" w-full flex-1 overflow-y-hidden">
 		{@render children()}
 	</div>
 </div>
