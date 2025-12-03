@@ -6,11 +6,10 @@ import { eq } from 'drizzle-orm';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { workspaceSchema } from '$lib/schemas/workspace-schema';
+import { requireLogin } from '$lib/server/db/utils';
 
-export const load = (async ({ locals }) => {
-	if (!locals.session) {
-		redirect(307, '/signin');
-	}
+export const load = (async () => {
+	requireLogin();
 	return {
 		form: await superValidate(zod(workspaceSchema))
 	};
@@ -42,8 +41,9 @@ export const actions = {
 				if (!newWorkspace) throw new Error('Workspace creation failed!');
 				const [adminRole] = await tx.select().from(roles).where(eq(roles.name, 'admin'));
 				if (!adminRole) throw new Error('Admin role not found');
+				if (!locals.session?.user.id) throw new Error('Unauthorised');
 				await tx.insert(workspaceAccess).values({
-					userId: locals.session.user.id,
+					userId: locals.session?.user.id,
 					workspaceId: newWorkspace.id,
 					roleId: adminRole.id
 				});

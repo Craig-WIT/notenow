@@ -7,7 +7,6 @@ import { getWorkspaceAccess, requireLogin } from '$lib/server/db/utils';
 import { subject } from '@casl/ability';
 
 export const load = (async ({ params }) => {
-	// TODO: Check user is logged in and workspace access etc
 	const { user } = requireLogin();
 
 	const { workspaceAccess, ability } = await getWorkspaceAccess({ user, workspaceId: params.wid });
@@ -20,6 +19,14 @@ export const load = (async ({ params }) => {
 export const actions = {
 	deleteWorkspace: async ({ locals, params }) => {
 		if (!locals.session) {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
+		const { ability } = await getWorkspaceAccess({
+			user: locals.session.user,
+			workspaceId: params.wid
+		});
+		if (ability.cannot('delete', subject('Workspace', { id: params.wid }))) {
 			return fail(401, { message: 'Unauthorized' });
 		}
 
@@ -37,7 +44,5 @@ export const actions = {
 		}
 
 		redirect(303, '/app');
-
-		//TODO check authorisation to delete
 	}
 } satisfies Actions;
