@@ -6,7 +6,8 @@ import {
 	text,
 	timestamp,
 	pgEnum,
-	primaryKey
+	primaryKey,
+	type AnyPgColumn
 } from 'drizzle-orm/pg-core';
 
 export const roleEnum = pgEnum('role_enum', ['admin', 'editor', 'viewer']);
@@ -132,32 +133,30 @@ export const notes = pgTable('notes', {
 	updatedAt: timestamp('updated_at').notNull().defaultNow()
 });
 
-// NOTE LIKES
-// export const noteLikes = pgTable(
-// 	'note_likes',
-// 	{
-// 		noteId: uuid('note_id')
-// 			.notNull()
-// 			.references(() => notes.id, { onDelete: 'cascade' }),
-// 		userId: uuid('user_id')
-// 			.notNull()
-// 			.references(() => users.id, { onDelete: 'cascade' }),
-// 		createdAt: timestamp('created_at').notNull().defaultNow()
-// 	},
-// 	(table) => [primaryKey({ columns: [table.noteId, table.userId] })]
-// );
+export const noteLikes = pgTable(
+	'note_likes',
+	{
+		noteId: uuid('note_id')
+			.notNull()
+			.references(() => notes.id, { onDelete: 'cascade' }),
+		userId: uuid('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		createdAt: timestamp('created_at').notNull().defaultNow()
+	},
+	(table) => [primaryKey({ columns: [table.noteId, table.userId] })]
+);
 
-// COMMENTS
-// export const noteComments = pgTable('note_comments', {
-// 	id: uuid('id').primaryKey().defaultRandom(),
-// 	noteId: uuid('note_id')
-// 		.notNull()
-// 		.references(() => notes.id, { onDelete: 'cascade' }),
-// 	userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
-// 	parentCommentId: uuid('parent_comment_id').references((): AnyPgColumn => noteComments.id, {
-// 		onDelete: 'cascade'
-// 	}),
-// 	content: text('content').notNull(),
-// 	createdAt: timestamp('created_at').notNull().defaultNow(),
-// 	updatedAt: timestamp('updated_at').notNull().defaultNow()
-// });
+export const noteComments = pgTable('note_comments', {
+	id: uuid('id').primaryKey().defaultRandom(),
+	noteId: uuid('note_id')
+		.notNull()
+		.references(() => notes.id, { onDelete: 'cascade' }),
+	userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
+	parentCommentId: uuid('parent_comment_id').references((): AnyPgColumn => noteComments.id, {
+		onDelete: 'cascade'
+	}),
+	content: text('content').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow()
+});
