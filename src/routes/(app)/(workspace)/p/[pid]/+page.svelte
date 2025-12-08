@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { Edit, FilePlus2, Heart, MessagesSquare, Share, Sparkles } from '@lucide/svelte';
 	import type { PageProps } from './$types';
+	import defineAbilityFor from '$lib/ability';
+	import { subject } from '@casl/ability';
 
 	let { data }: PageProps = $props();
+
+	let ability = defineAbilityFor(data.user, data.workspaceAccess, data.pageAccess);
 </script>
 
 <div class="mb-10">
@@ -16,42 +20,45 @@
 			</div>
 		</div>
 		<div>
-			<!-- TODO: Check if user can update page -->
-			<a href="/p/{data.page.id}/edit" class="btn btn-outline btn-sm ms-4"
-				><Edit size="16" /> Edit</a
-			>
+			{#if ability.can('update', subject('Page', { id: data.page.id }))}
+				<a href="/p/{data.page.id}/edit" class="btn ms-4 btn-outline btn-sm"
+					><Edit size="16" /> Edit</a
+				>
+			{/if}
 			<!-- TODO: Add delete page form -->
 		</div>
 	</div>
 	<div class="mt-6">
-		<!-- TODO: Check if user can update page -->
-		<a href="/p/{data.page.id}/note/new" class="btn btn-primary btn-sm me-1"
-			><FilePlus2 size="16" /> New Note</a
-		>
-		<!-- TODO: Check if user can manage page -->
-		<a href="" class="btn btn-primary btn-sm me-1"><Share size="16" /> Share</a>
-		<a href="" class="btn btn-primary btn-sm me-1"><Sparkles size="16" /> Summarize</a>
+		{#if ability.can('update', subject('Page', { id: data.page.id }))}
+			<a href="/p/{data.page.id}/note/new" class="btn me-1 btn-sm btn-primary"
+				><FilePlus2 size="16" /> New Note</a
+			>
+		{/if}
+		{#if ability.can('manage', subject('Page', { id: data.page.id }))}
+			<a href="" class="btn me-1 btn-sm btn-primary"><Share size="16" /> Share</a>
+		{/if}
+		<a href="" class="btn me-1 btn-sm btn-primary"><Sparkles size="16" /> Summarize</a>
 	</div>
 </div>
 
 <div class="max-w-[900px]">
 	{#await data.notes}
 		{#each { length: 4 }}
-			<div class="card bg-base-200 mb-4 rounded-md p-4">
-				<div class="skeleton mb-2 h-8 w-full rounded-md"></div>
-				<div class="skeleton mb-2 h-4 w-full rounded-md"></div>
-				<div class="skeleton mb-2 h-4 w-full rounded-md"></div>
-				<div class="skeleton mb-2 h-4 w-full rounded-md"></div>
+			<div class="card mb-4 rounded-md bg-base-200 p-4">
+				<div class="mb-2 h-8 w-full skeleton rounded-md"></div>
+				<div class="mb-2 h-4 w-full skeleton rounded-md"></div>
+				<div class="mb-2 h-4 w-full skeleton rounded-md"></div>
+				<div class="mb-2 h-4 w-full skeleton rounded-md"></div>
 			</div>
 		{/each}
 	{:then notes}
 		{#each notes as note}
-			<div class="card bg-base-200 mb-4 rounded-md p-4">
+			<div class="card mb-4 rounded-md bg-base-200 p-4">
 				<div
-					class="group border-b-base-100 -m-4 mb-4 flex items-center justify-between border-b-1 px-4 py-2"
+					class="group -m-4 mb-4 flex items-center justify-between border-b-1 border-b-base-100 px-4 py-2"
 				>
 					<div>
-						<a href="" class="btn btn-outline border-base-300 btn-sm"
+						<a href="" class="btn border-base-300 btn-outline btn-sm"
 							><Sparkles size="16" /> Summarize</a
 						>
 					</div>
@@ -63,7 +70,7 @@
 						<!-- TODO: Add delete note form -->
 					</div>
 				</div>
-				<div class="bg-base-300 rounded-md p-4">
+				<div class="rounded-md bg-base-300 p-4">
 					<!-- TODO: Render the content as markdown -->
 					<p>{note.content}</p>
 				</div>
