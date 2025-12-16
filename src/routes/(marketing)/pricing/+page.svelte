@@ -20,7 +20,7 @@
 					{ name: 'Unlimited file attachments', included: false }
 				],
 				cta: 'Get Started',
-				ctaLink: '/auth/signup',
+				ctaLink: '',
 				popular: false
 			},
 			{
@@ -39,7 +39,7 @@
 					{ name: '5GB file attachments', included: true }
 				],
 				cta: 'Start Free Trial',
-				ctaLink: '/auth/signup?plan=pro',
+				ctaLink: '',
 				popular: true
 			},
 			{
@@ -96,13 +96,13 @@
 		<div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
 			{#each pricingData.plans as plan, index}
 				<div
-					class="card bg-base-100 border-base-200 overflow-hidden rounded-md border shadow-md {plan.popular
+					class="card overflow-hidden rounded-md border border-base-200 bg-base-100 shadow-md {plan.popular
 						? 'relative'
 						: ''}"
 				>
 					{#if plan.popular}
 						<div
-							class="bg-primary text-primary-content absolute top-0 right-0 rounded-bl-md px-3 py-1 text-sm font-medium"
+							class="absolute top-0 right-0 rounded-bl-md bg-primary px-3 py-1 text-sm font-medium text-primary-content"
 						>
 							Most Popular
 						</div>
@@ -123,7 +123,7 @@
 										{#if feature.included}
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
-												class="text-success mt-0.5 mr-2 h-5 w-5"
+												class="mt-0.5 mr-2 h-5 w-5 text-success"
 												fill="none"
 												viewBox="0 0 24 24"
 												stroke="currentColor"
@@ -176,7 +176,7 @@
 
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			{#each pricingData.faq as faq}
-				<div class="card bg-base-200 rounded-md shadow-sm">
+				<div class="card rounded-md bg-base-200 shadow-sm">
 					<div class="card-body">
 						<h3 class="card-title text-lg">{faq.question}</h3>
 						<p>{faq.answer}</p>
@@ -186,13 +186,13 @@
 		</div>
 	</section>
 
-	<section class="card bg-base-200 mx-auto max-w-3xl rounded-md p-8 text-center">
+	<section class="card mx-auto max-w-3xl rounded-md bg-base-200 p-8 text-center">
 		<h2 class="mb-4 text-2xl font-bold">Need a Custom Plan?</h2>
 		<p class="mb-6">
 			We offer custom solutions for large teams and enterprises. Contact our sales team to discuss
 			your specific requirements.
 		</p>
-		<a href="mailto:enterprise@notenow.com" class="btn btn-primary rounded-md"
+		<a href="mailto:enterprise@notenow.com" class="btn rounded-md btn-primary"
 			>Contact Enterprise Sales</a
 		>
 	</section>

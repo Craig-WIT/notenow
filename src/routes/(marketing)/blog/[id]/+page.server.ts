@@ -3,39 +3,38 @@ import type { PageServerLoad } from './$types';
 import type { Post, PostComment } from '$lib/types';
 import Rect from '$lib/rect';
 
-export const load = (async ({params, fetch}) => {
-    
-    async function fetchPost() {
-        console.log('Fetch post started')
-        const postRes = await fetch(`https://dummyjson.com/posts/${params.id}`)
+export const prerender = false;
 
-        if(postRes.status !== 200) {
-            error(postRes.status, {message: 'Failed to load post',
-                code: "ERROR_CODE",
-            })
-        }
+export const load = (async ({ params, fetch }) => {
+	async function fetchPost() {
+		console.log('Fetch post started');
+		const postRes = await fetch(`https://dummyjson.com/posts/${params.id}`);
 
-        const postResJSON: Post = await postRes.json()
+		if (postRes.status !== 200) {
+			error(postRes.status, { message: 'Failed to load post', code: 'ERROR_CODE' });
+		}
 
-        console.log('Fetch post ended')
+		const postResJSON: Post = await postRes.json();
 
-        return postResJSON
-    }
+		console.log('Fetch post ended');
 
-    async function fetchComments() {
-        console.log('Fetch comments started')
-        const commentsRes = await fetch(`https://dummyjson.com/posts/${params.id}/comments`)
+		return postResJSON;
+	}
 
-        const commentsArray: PostComment[] = commentsRes.ok ? (await commentsRes.json()).comments : []
+	async function fetchComments() {
+		console.log('Fetch comments started');
+		const commentsRes = await fetch(`https://dummyjson.com/posts/${params.id}/comments`);
 
-        console.log('Fetch comments ended')
+		const commentsArray: PostComment[] = commentsRes.ok ? (await commentsRes.json()).comments : [];
 
-        return commentsArray
-    }
-    
-    return {
-        comments: fetchComments(),
-        post: await fetchPost(),
-        rect: new Rect(0,0,100,100),
-    };
+		console.log('Fetch comments ended');
+
+		return commentsArray;
+	}
+
+	return {
+		comments: fetchComments(),
+		post: await fetchPost(),
+		rect: new Rect(0, 0, 100, 100)
+	};
 }) satisfies PageServerLoad;

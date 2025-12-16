@@ -3,6 +3,8 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 import { requireLogin } from '$lib/server/db/utils';
 
+export const ssr = false;
+
 export const load = (async () => {
 	const session = requireLogin();
 	console.log(session.user);
